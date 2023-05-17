@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStadiumRequest;
+use App\Http\Resources\ShowStadiumResource;
 use App\Models\Stadium;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,7 @@ class StadiumController extends Controller
     public function index()
     {
         $stadiums = Stadium::all();
+        $stadiums = ShowStadiumResource::collection($stadiums);
         return response()->json(['success'=> true, 'message'=> 'Get all stadiums are successfully.' ,'data'=> $stadiums], 200);
     }
 
@@ -36,6 +38,7 @@ class StadiumController extends Controller
     {
         $stadium = Stadium::find($id);
         if ($stadium) {
+            $stadium = new ShowStadiumResource($stadium);
             return response()->json(['success'=> true, 'message'=> 'Get all stadium are successfully.' ,'data'=> $stadium], 200);
         }
         return response()->json(['success'=> false, 'message'=> 'Stadium id is found.'], 404);
